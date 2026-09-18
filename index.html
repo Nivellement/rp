@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>DOSSIER GARASU NOBE - BUREAU NOCTURNE</title>
+<style>
+
+body, h1, h2, p { margin: 0; padding: 0; }
+
+body {
+  background: #050505; /* fond très sombre de base */
+  font-family: 'Courier New', Courier, monospace;
+  color: #222;
+  overflow: hidden; /* empêche le scroll quand on jette les dossiers sur le côté */
+  background-image: repeating-linear-gradient(45deg, #0a0a0a 25%, transparent 25%, transparent 75%, #0a0a0a 75%, #0a0a0a), repeating-linear-gradient(45deg, #0a0a0a 25%, #050505 25%, #050505 75%, #0a0a0a 75%, #0a0a0a);
+  background-position: 0 0, 10px 10px;
+  background-size: 20px 20px;
+}
+
+/* Le halo de la lampe torche */
+#lampe-torche {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* TRÈS IMPORTANT sinon on peut pas cliquer sur les dossiers en dessous xDD */
+  z-index: 9999;
+  background: radial-gradient(circle 280px at 50vw 50vh, transparent 5%, rgba(0,0,0,0.92) 60%, rgba(0,0,0,1) 100%);
+}
+
+.folder-panel {
+  position: absolute; /* pour pouvoir les bouger */
+  width: 480px;
+  background: #f4efe6;
+  padding: 30px;
+  -webkit-box-shadow: 5px 15px 30px rgba(0,0,0,0.8);
+  box-shadow: 5px 15px 30px rgba(0,0,0,0.8);
+  cursor: grab;
+  /* Motif papier */
+  background-image: radial-gradient(#e0d8c8 5%, transparent 5%);
+  background-size: 16px 16px;
+  border: 1px solid #dcd5c7;
+}
+
+.folder-panel:active {
+  cursor: grabbing;
+}
+
+/* Header doc */
+.doc-header {
+  border-bottom: 2px solid #222;
+  padding-bottom: 12px;
+  margin-bottom: 22px;
+  pointer-events: none; /* evite de bugger le drag sur le texte */
+}
+
+.doc-photo-container {
+  float: right;
+  width: 140px;
+  background: #fff;
+  padding: 8px 8px 30px 8px;
+  box-shadow: 3px 6px 15px rgba(0,0,0,0.3);
+  border: 1px solid #dcd5c7;
+  transform: rotate(2.4deg);
+  margin: 0 0 15px 20px;
+  pointer-events: none;
+}
+.doc-photo-container img { width: 100%; display: block; }
+.doc-photo-caption { font-family: Georgia, serif; font-style: italic; font-size: 10px; color: #666; text-align: center; margin-top: 6px; }
+
+/* Tampons - pas touché */
+.stamp { float: right; border: 2px dashed #a82e2e; color: #a82e2e; padding: 3px 8px; font-weight: bold; font-size: 12px; transform: rotate(-4.5deg); letter-spacing: 1px; }
+.stamp.green { border-color: #4a7c59; color: #4a7c59; transform: rotate(-2.5deg); }
+.stamp.blue { border-color: #4a6fa5; color: #4a6fa5; transform: rotate(1.5deg); }
+
+/* Champs */
+.field-group { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 22px; background: rgba(0,0,0,0.035); padding: 14px; border: 1px solid #dcd5c7; pointer-events: none; }
+.field { flex: 1 1 180px; }
+.field-label { font-weight: bold; color: #666; font-size: 11px; text-transform: uppercase; }
+.field-value { color: #111; font-size: 14px; font-weight: bold; }
+
+.doc-body { font-size: 14.5px; line-height: 1.5; pointer-events: none; }
+.doc-body p { margin-bottom: 12px; }
+
+/* Notes stylo */
+.handwritten { font-family: Georgia, serif; font-style: italic; color: #1a2a40; background: #eae4d6; padding: 16px; border-left: 3px solid #3b6998; margin: 18px 0; }
+.handwritten-note { background: #fff8e1; border: 1px solid #ebd8a0; padding: 14px; margin-top: 18px; font-size: 14px; box-shadow: 2px 2px 5px rgba(0,0,0,0.05); transform: rotate(-0.3deg); }
+
+.clear { clear: both; }
+
+.page-sticker {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  background: #222;
+  color: #fff;
+  padding: 4px 8px;
+  font-weight: bold;
+  font-size: 11px;
+  transform: rotate(-10deg);
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+</style>
+</head>
+<body>
+
+<div id="lampe-torche"></div>
+
+<div class="folder-panel" id="page1" style="top: 40px; left: 50px; transform: rotate(-2deg);">
+  <div class="page-sticker">P.01</div>
+  <div class="doc-header">
+    <div class="stamp">ARCHIVÉ</div>
+    <div style="font-size: 1.15rem; font-weight: bold; text-transform: uppercase;">Fiche Signalétique & Carrière</div>
+    <div style="font-size: 0.78rem; color: #555; margin-top: 4px;">Registre Général -> Exorcistes de Métier</div>
+    <div class="clear"></div>
+  </div>
+
+  <div class="field-group">
+    <div class="field"><div class="field-label">Identité</div><div class="field-value">GARASU Nobe</div></div>
+    <div class="field"><div class="field-label">Âge</div><div class="field-value">38 ans</div></div>
+    <div class="field"><div class="field-label">Rang actuel</div><div class="field-value">Classe 1 (Ancienneté)</div></div>
+    <div class="field"><div class="field-label">Situation</div><div class="field-value">Célibataire / Sans attache</div></div>
+  </div>
+
+  <div class="doc-body">
+    <div class="doc-photo-container">
+      <img src="https://imgs.search.brave.com/bgMCK9vPSTjRvvKkvGGZprSkmgvW8WquT-MKReLyRVM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzL2I0Lzdl/L2Q3L2I0N2VkNzhh/ODc2ZDM2NmJiMTg5/ZWFlYTM2N2YwZGQy/LmpwZw" alt="Photo Garasu Nobe">
+      <div class="doc-photo-caption">Cliché d'archives</div>
+    </div>
+    <p><strong>Historique civil :</strong> Entré tardivement dans le milieu. A subsisté durant une dizaine d'années en enchaînant des emplois précaires (restauration rapide, transport routier, caisse). Parents séparés ayant coupé tout contact après sa majorité.</p>
+    <p><strong>Évaluation RH :</strong> Garasu Nobe ne présente aucun signe d'ambition particulière. Il effectue le strict nombre d'heures requis par son contrat. Sa promotion au Rang 1 s'est faite naturellement par cumul de missions ordinaires sur la durée, sans faits d'armes éclatants.</p>
+    <div class="clear"></div>
+  </div>
+</div>
+
+<div class="folder-panel" id="page2" style="top: 80px; left: 300px; transform: rotate(1deg);">
+  <div class="page-sticker">P.02</div>
+  <div class="doc-header">
+    <div class="stamp green">APTE</div>
+    <div style="font-size: 1.15rem; font-weight: bold; text-transform: uppercase;">Compte-rendu d'entretien annuel</div>
+    <div style="font-size: 0.78rem; color: #555; margin-top: 4px;">Service de Médecine du Travail</div>
+    <div class="clear"></div>
+  </div>
+
+  <div class="doc-body">
+    <p><strong>Notes de séance par Dr. V... :</strong></p>
+    <div class="handwritten">
+      Le sujet se présente à la séance avec sa fatigue habituelle. Il ne manifeste pas d'idéation sombre ni d'animosité envers l'institution. Quand j'aborde la question de son avenir, il évoque posément son projet de passer le concours d'enseignant dans le primaire.<br><br>
+      À ma question sur ce choix d'orientation, il a simplement répondu: "J'aimerais juste apprendre aux jeunes à ne pas faire les mêmes choix stupides que moi, et leur éviter de finir à courir après des trucs qui font mal."
+    </div>
+    <p><strong>Conclusion du médecin:</strong> Aucune menace psychologique ou tendance sociopathe décelée. Nobe est simplement un homme usé par le terrain qui prépare gentiment sa sortie du milieu.</p>
+  </div>
+</div>
+
+<div class="folder-panel" id="page3" style="top: 250px; left: 150px; transform: rotate(-3deg);">
+  <div class="page-sticker">P.03</div>
+  <div class="doc-header">
+    <div class="stamp green">VALIDER</div>
+    <div style="font-size: 1.15rem; font-weight: bold; text-transform: uppercase;">Note Interne de Passation</div>
+    <div style="font-size: 0.78rem; color: #555; margin-top: 4px;">À l'attention du nouveau Chef d'Équipe</div>
+    <div class="clear"></div>
+  </div>
+
+  <div class="doc-body">
+    <p>Je te laisse Nobe dans l'effectif pour la saison. Quelques détails utiles à connaitre avant de l'envoyer en mission :</p>
+    <div class="handwritten-note">
+      Ne compte pas sur lui pour faire du zèle. À 18h00 pile, sa veste est sur son dos et il ne répondra plus aux appels non prioritaires. Par contre, il a dix ans de bouteille sur le terrain. Il repère les pièges bêtes avant tout le monde.<br><br>
+      Si tu dois envoyer des jeunes recrues un peu trop enthousiastes sur une opération délicate, colle-leur Nobe dans les pattes. Il va passer sa journée à rouspéter, il va leur répéter qu'ils sont inconscients, mais il fera en sorte que tout le monde rentre entier.
+    </div>
+  </div>
+</div>
+
+<div class="folder-panel" id="page4" style="top: 150px; left: 500px; transform: rotate(4deg);">
+  <div class="page-sticker">P.04</div>
+  <div class="doc-header">
+    <div class="stamp blue">INCOMPLET</div>
+    <div style="font-size: 1.15rem; font-weight: bold; text-transform: uppercase;">Fiche d'Analyse Occulte</div>
+    <div style="font-size: 0.78rem; color: #555; margin-top: 4px;">Recherche & Métrologie Occulte</div>
+    <div class="clear"></div>
+  </div>
+
+  <div class="field-group">
+    <div class="field"><div class="field-label">Nom du Sort</div><div class="field-value">Retrait</div></div>
+    <div class="field"><div class="field-label">Renforcement</div><div class="field-value">Extrême</div></div>
+    <div class="field"><div class="field-label">Densité</div><div class="field-value">Moyen à Faible</div></div>
+  </div>
+
+  <div class="doc-body">
+    <p><strong>Observations du département:</strong></p>
+    <p>Les données concernant la technique innée de Nobe restent très floues. Interrogé à ce sujet, l'intéressé se montre incapable de fournir une explication théorique et prétend ne rien maîtriser de particulier.</p>
+    <p>Les relevés de terrain montrent pourtant une constante curieuse: lors des impacts physiques ou magiques qui devraient normalement causer des dommages graves, la puissance du coup subit une baisse soudaine au moment du contact.</p>
+    <p>Nobe considère son sort comme capricieux et autonome. Mais la fluctuation occulte au niveau de son cerveau laisse penser qu'il l'active consciemment et en cache juste la nature.</p>
+  </div>
+</div>
+
+<script>
+
+var docTorche = document.getElementById('lampe-torche');
+var sourisX = window.innerWidth / 2; 
+var sourisY = window.innerHeight / 2;
+
+document.onmousemove = function(e) {
+  sourisX = e.clientX || e.pageX;
+  sourisY = e.clientY || e.pageY;
+  docTorche.style.background = 'radial-gradient(circle 300px at ' + sourisX + 'px ' + sourisY + 'px, transparent 5%, rgba(0,0,0,0.95) 60%, rgba(0,0,0,1) 100%)';
+  
+  if(objetActif) {
+    objetActif.style.left = (sourisX - offsetX) + 'px';
+    objetActif.style.top = (sourisY - offsetY) + 'px';
+  }
+};
+
+var zIndexCourant = 10;
+var objetActif = null;
+var offsetX = 0;
+var offsetY = 0;
+
+var pages = document.getElementsByClassName('folder-panel');
+
+for(var i=0; i<pages.length; i++) {
+  // on disperse un peu les dossiers au hasard au chargement
+  var offsetRandomX = Math.floor(Math.random() * 150) - 50;
+  var offsetRandomY = Math.floor(Math.random() * 100) - 50;
+  
+  var currentLeft = parseInt(pages[i].style.left) || 0;
+  var currentTop = parseInt(pages[i].style.top) || 0;
+  
+  pages[i].style.left = (currentLeft + offsetRandomX) + 'px';
+  pages[i].style.top = (currentTop + offsetRandomY) + 'px';
+
+  pages[i].onmousedown = function(e) {
+    objetActif = this;
+    zIndexCourant++;
+    objetActif.style.zIndex = zIndexCourant;
+    
+    var rect = objetActif.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+  };
+}
+
+document.onmouseup = function() {
+  objetActif = null;
+};
+</script>
+</body>
+</html>
